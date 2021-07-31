@@ -1,0 +1,39 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://World.gd" type="Script" id=1]
+[ext_resource path="res://UI/HUD.tscn" type="PackedScene" id=2]
+[ext_resource path="res://UI/Menulayer.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/textures/background.png" type="Texture" id=4]
+[ext_resource path="res://characters/player/player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://enviroment/ObstacleSpawner.tscn" type="PackedScene" id=6]
+[ext_resource path="res://enviroment/Ground.tscn" type="PackedScene" id=7]
+
+[node name="World" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="HUD" parent="." instance=ExtResource( 2 )]
+
+[node name="MenuLayer" parent="." instance=ExtResource( 3 )]
+
+[node name="Background " type="Sprite" parent="."]
+texture = ExtResource( 4 )
+centered = false
+
+[node name="player" parent="." instance=ExtResource( 5 )]
+position = Vector2( 143, 438 )
+
+[node name="ObstacleSpawner" parent="." instance=ExtResource( 6 )]
+position = Vector2( 800, 0 )
+
+[node name="Ground" parent="." instance=ExtResource( 7 )]
+editor/display_folded = true
+position = Vector2( 10, 749 )
+
+[node name="DeathZone" parent="Ground" index="3"]
+editor/display_folded = true
+
+[connection signal="start_game" from="MenuLayer" to="." method="_on_MenuLayer_start_game"]
+[connection signal="died" from="player" to="." method="_on_player_died"]
+[connection signal="body_entered" from="Ground/DeathZone" to="." method="_on_DeathZone_body_entered"]
+
+[editable path="Ground"]
